@@ -1,0 +1,35 @@
+main .breadcrumbs {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+  font-size: var(--body-font-size-s);
+}
+
+main .breadcrumbs ol {
+  display: flex;
+  flex-flow: wrap;
+  gap: 1ch;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+}
+
+main .breadcrumbs ol li {
+  padding-inline-start: 0;
+  opacity: 0.7;
+}
+
+main .breadcrumbs ol li:not(:last-child)::after {
+  content: "/";
+  padding-left: 1ch;
+}
+
+main .breadcrumbs ol li a:any-link {
+  color: var(--text-color);
+}
+
+main .breadcrumbs ol li:last-of-type {
+  opacity: 1;
+}
