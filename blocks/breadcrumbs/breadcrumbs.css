@@ -1,37 +1,37 @@
-main .breadcrumb {
+main .breadcrumbs {
   display: inline-block;
   padding: 0;
   list-style: none;
   font-size: var(--body-font-size-xs);
 }
 
-main .breadcrumb ul {
+main .breadcrumbs ul {
   margin-top: 0;
   padding-top: 0;
   list-style: none;
 }
 
-main .breadcrumb li {
+main .breadcrumbs li {
   display: inline-block;
   padding: 10px 5px;
   text-transform: uppercase;
 }
 
-main .breadcrumb li a {
+main .breadcrumbs li a {
   color: var(--text-color);
   text-decoration: none;
   font-weight: 600;
 }
 
-main .breadcrumb li a:hover {
+main .breadcrumbs li a:hover {
   color: var(--link-hover-color);
 }
 
-main .breadcrumb li:first-child {
+main .breadcrumbs li:first-child {
   padding-left: 0;
 }
 
-main .breadcrumb li::before {
+main .breadcrumbs li::before {
   content: "▶";
   padding-right: 5px;
   font-family: arial, sans-serif;
@@ -42,6 +42,6 @@ main .breadcrumb li::before {
   color: var(--link-color);
 }
 
-main .breadcrumb li:first-child::before {
+main .breadcrumbs li:first-child::before {
   content: none;
 }
