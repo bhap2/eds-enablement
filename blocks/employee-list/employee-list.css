@@ -1,0 +1,51 @@
+main .employee-list .employee-list-items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+main .employee-list .employee-list-item {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--light-color);
+}
+
+main .employee-list .employee-list-name {
+  font-weight: 600;
+  font-size: var(--body-font-size-s);
+}
+
+main .employee-list .employee-list-department,
+main .employee-list .employee-list-experience,
+main .employee-list .employee-list-city {
+  font-size: var(--body-font-size-xs);
+  color: var(--dark-color);
+}
+
+main .employee-list .employee-list-load-more {
+  margin-top: 24px;
+  border: 2px solid var(--text-color);
+  border-radius: 2.4em;
+  padding: 0.5em 1.2em;
+  background-color: var(--text-color);
+  color: var(--background-color);
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+main .employee-list .employee-list-load-more:hover {
+  border-color: var(--dark-color);
+  background-color: var(--dark-color);
+  color: var(--light-color);
+}
+
+@media (width >= 600px) {
+  main .employee-list .employee-list-item {
+    grid-template-columns: 2fr 1.5fr 1fr 1.5fr;
+    align-items: baseline;
+    gap: 16px;
+  }
+}
