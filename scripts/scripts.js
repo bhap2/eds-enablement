@@ -167,8 +167,8 @@ async function loadEager(doc) {
     decorateMain(main);
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), (section) => {
-    if (document.body.classList.contains('quick-edit')) return Promise.resolve();
-    return waitForFirstImage(section);
+      if (document.body.classList.contains('quick-edit')) return Promise.resolve();
+      return waitForFirstImage(section);
     });
   }
 
@@ -208,6 +208,7 @@ async function loadLazy(doc) {
   };
 
   const addSidekickListeners = (sk) => {
+    if (!sk) return;
     sk.addEventListener('custom:quick-edit', loadQuickEdit);
   };
 
@@ -215,10 +216,9 @@ async function loadLazy(doc) {
   if (sk) {
     addSidekickListeners(sk);
   } else {
-    // wait for sidekick to be loaded
-    document.addEventListener('sidekick-ready', () => {
-    // sidekick now loaded
-      addSidekickListeners(document.querySelector('aem-sidekick'));
+    // wait for sidekick to be loaded, then read the element from the event
+    document.addEventListener('sidekick-ready', (e) => {
+      addSidekickListeners(e.target || document.querySelector('aem-sidekick'));
     }, { once: true });
   }
 }
