@@ -53,5 +53,8 @@ export default function init(payload) {
   if (ref === 'local') origin = 'http://localhost:6456';
   if (!origin) origin = `https://${ref}--da-nx--adobe.aem.live`;
   addImportmap();
-  loadModule(origin, payload || generateSidekickPayload());
+  const validPayload = payload && payload.detail && payload.detail.config
+    ? payload
+    : generateSidekickPayload();
+  loadModule(origin, validPayload);
 }
