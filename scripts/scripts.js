@@ -217,8 +217,8 @@ async function loadLazy(doc) {
   } else {
     // wait for sidekick to be loaded
     document.addEventListener('sidekick-ready', () => {
-    // sidekick now loaded
-    addSidekickListeners(document.querySelector('aem-sidekick'));
+      // sidekick now loaded
+      addSidekickListeners(document.querySelector('aem-sidekick'));
     }, { once: true });
   }
 }
