@@ -12,6 +12,20 @@ export default function decorate(block) {
     });
     ul.append(li);
   });
-  ul.querySelectorAll('picture > img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
+  ul.querySelectorAll('picture > img').forEach((img) => {
+    img.closest('picture').replaceWith(
+      createOptimizedPicture(
+        img.src,
+        img.alt,
+        false,
+        [
+          { media: '(min-width: 900px)', width: '750' },
+          { media: '(min-width: 600px)', width: '600' },
+          { width: '480' },
+        ],
+      ),
+    );
+  });
+
   block.replaceChildren(ul);
 }

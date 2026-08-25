@@ -182,19 +182,16 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    await loadSection(main.querySelector('.section'), (section) => {
-      if (document.body.classList.contains('quick-edit')) return Promise.resolve();
-      return waitForFirstImage(section);
-    });
-  }
+    await loadSection(
+      main.querySelector('.section'),
+      (section) => {
+        if (document.body.classList.contains('quick-edit')) {
+          return Promise.resolve();
+        }
 
-  try {
-    /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
-    if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
-      loadFonts();
-    }
-  } catch (e) {
-    // do nothing
+        return waitForFirstImage(section);
+      },
+    );
   }
 }
 
