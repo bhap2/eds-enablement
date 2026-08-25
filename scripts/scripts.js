@@ -182,14 +182,7 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    // eager-load the LCP candidate: the first image in the first section
-    const firstSection = main.querySelector('.section');
-    const lcpImg = firstSection && firstSection.querySelector('img');
-    if (lcpImg) {
-      lcpImg.setAttribute('loading', 'eager');
-      lcpImg.setAttribute('fetchpriority', 'high');
-    }
-    await loadSection(firstSection, (section) => {
+    await loadSection(main.querySelector('.section'), (section) => {
       if (document.body.classList.contains('quick-edit')) return Promise.resolve();
       return waitForFirstImage(section);
     });
