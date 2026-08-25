@@ -143,6 +143,21 @@ function decorateButtons(main) {
 }
 
 /**
+ * Ensures images have meaningful alt text for accessibility. Authors' image
+ * titles arrive in `data-title`; when the alt is empty, promote that title to
+ * alt so screen readers (and Lighthouse) get descriptive text.
+ * @param {HTMLElement} main The main container element
+ */
+function improveImageAccessibility(main) {
+  main.querySelectorAll('img').forEach((img) => {
+    if (!img.getAttribute('alt')) {
+      const title = img.dataset.title || img.getAttribute('title');
+      if (title) img.setAttribute('alt', title);
+    }
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -153,6 +168,7 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
+  improveImageAccessibility(main);
 }
 
 /**
@@ -166,7 +182,14 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    await loadSection(main.querySelector('.section'), (section) => {
+    // eager-load the LCP candidate: the first image in the first section
+    const firstSection = main.querySelector('.section');
+    const lcpImg = firstSection && firstSection.querySelector('img');
+    if (lcpImg) {
+      lcpImg.setAttribute('loading', 'eager');
+      lcpImg.setAttribute('fetchpriority', 'high');
+    }
+    await loadSection(firstSection, (section) => {
       if (document.body.classList.contains('quick-edit')) return Promise.resolve();
       return waitForFirstImage(section);
     });
@@ -208,6 +231,7 @@ async function loadLazy(doc) {
   };
 
   const addSidekickListeners = (sk) => {
+    if (!sk) return;
     sk.addEventListener('custom:quick-edit', loadQuickEdit);
   };
 
@@ -215,10 +239,9 @@ async function loadLazy(doc) {
   if (sk) {
     addSidekickListeners(sk);
   } else {
-    // wait for sidekick to be loaded
-    document.addEventListener('sidekick-ready', () => {
-      // sidekick now loaded
-      addSidekickListeners(document.querySelector('aem-sidekick'));
+    // wait for sidekick to be loaded, then read the element from the event
+    document.addEventListener('sidekick-ready', (e) => {
+      addSidekickListeners(e.target || document.querySelector('aem-sidekick'));
     }, { once: true });
   }
 }
