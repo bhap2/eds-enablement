@@ -31,3 +31,92 @@
     order: unset;
   }
 }
+
+/* ---- article-header variant (blog post header) ---- */
+main .columns.columns-article-header > div {
+  gap: 24px;
+}
+
+/* image: 3:2 crop with rounded corners */
+main .columns.columns-article-header .columns-img-col img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* breadcrumb */
+main .columns.columns-article-header .columns-breadcrumb {
+  margin: 0 0 32px;
+  font-size: var(--body-font-size-s);
+}
+
+main .columns.columns-article-header .columns-breadcrumb a:any-link {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+main .columns.columns-article-header .columns-breadcrumb a + a::before {
+  content: "\203A";
+  margin: 0 8px;
+  color: var(--text-color);
+  font-weight: 400;
+}
+
+/* heading — reset the global top margin so it sits under the breadcrumb */
+main .columns.columns-article-header h1 {
+  margin: 0;
+}
+
+/* meta rows (author / date) */
+main .columns.columns-article-header .columns-meta {
+  margin-top: 16px;
+}
+
+main .columns.columns-article-header .columns-meta-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+main .columns.columns-article-header .columns-meta-date {
+  margin-top: 8px;
+}
+
+main .columns.columns-article-header .columns-meta-item {
+  margin: 0;
+  font-size: var(--body-font-size-xs);
+  line-height: 1.6;
+  color: var(--link-color);
+}
+
+/* author name is emphasised in the primary text color */
+main .columns.columns-article-header .columns-meta-author .columns-meta-item:last-child {
+  color: var(--text-color);
+}
+
+/* category pill */
+main .columns.columns-article-header .columns-category {
+  display: inline-block;
+  width: fit-content;
+  margin: 16px 0 0;
+  border-radius: 9999px;
+  padding: 4px 12px;
+  background-color: #f4fe8b;
+  color: var(--text-color);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+@media (width >= 900px) {
+  /* equal two-column grid, vertically centered */
+  main .columns.columns-article-header > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+}
