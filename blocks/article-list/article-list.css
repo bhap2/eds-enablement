@@ -1,7 +1,7 @@
 main .article-list .article-list-items {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -10,27 +10,68 @@ main .article-list .article-list-items {
 main .article-list .article-list-item {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  border: 1px solid var(--light-color);
-  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+  border-radius: 20px;
   overflow: hidden;
+  background-color: transparent;
+}
+
+main .article-list .article-list-image {
+  display: block;
+}
+
+main .article-list .article-list-image a {
+  display: block;
 }
 
 main .article-list .article-list-image img {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
 }
 
 main .article-list .article-list-body {
-  padding: 0 16px 16px;
+  padding: 24px;
+}
+
+/* category tag + date meta row */
+main .article-list .article-list-meta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 12px;
+}
+
+main .article-list .article-list-category {
+  display: inline-block;
+  width: fit-content;
+  border-radius: 9999px;
+  padding: 4px 12px;
+  background-color: #f4fe8b;
+  color: var(--text-color);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+main .article-list .article-list-date {
+  margin: 0;
+  color: var(--link-color);
+  font-size: var(--body-font-size-xs);
+  font-weight: 400;
+  line-height: 1.6;
 }
 
 main .article-list .article-list-body h3 {
-  margin: 8px 0;
-  font-size: var(--heading-font-size-s);
+  margin: 0;
+  font-size: var(--body-font-size-m);
+  font-weight: 700;
+  line-height: 1.1;
 }
 
 main .article-list .article-list-body h3 a:any-link {
@@ -43,8 +84,8 @@ main .article-list .article-list-body h3 a:hover {
 }
 
 main .article-list .article-list-body p {
-  margin: 0;
-  color: var(--dark-color);
+  margin: 12px 0 0;
+  color: var(--link-color);
   font-size: var(--body-font-size-xs);
 }
 
@@ -57,5 +98,11 @@ main .article-list .article-list-body p {
 @media (width >= 900px) {
   main .article-list .article-list-items {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (width >= 1200px) {
+  main .article-list .article-list-items {
+    grid-template-columns: repeat(4, 1fr);
   }
 }

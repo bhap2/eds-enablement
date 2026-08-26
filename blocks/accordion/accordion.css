@@ -1,0 +1,71 @@
+/*
+ * Accordion Block
+ * Card-style collapsible FAQ items matching wknd-trendsetters source.
+ * Each item is a bordered, rounded card; question uses the body font,
+ * answer is muted. A +/- toggle sits at the far right of the question.
+ */
+
+main .accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+main .accordion .accordion-item {
+  border: 1px solid #e8e8e8;
+  border-radius: 16px;
+  background-color: transparent;
+}
+
+main .accordion .accordion-item-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 32px;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--dark-color);
+  cursor: pointer;
+  list-style: none;
+}
+
+main .accordion .accordion-item-label > * {
+  margin: 0;
+}
+
+main .accordion .accordion-item-label::-webkit-details-marker {
+  display: none;
+}
+
+main .accordion .accordion-item-label::after {
+  content: "+";
+  flex: 0 0 auto;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--dark-color);
+}
+
+main .accordion .accordion-item[open] .accordion-item-label::after {
+  content: "\2212";
+}
+
+main .accordion .accordion-item-body {
+  padding: 0 32px 32px;
+  color: #404040;
+  font-size: var(--body-font-size-s);
+  line-height: 1.7;
+}
+
+main .accordion .accordion-item-body > *:first-child {
+  margin-top: 0;
+}
+
+main .accordion .accordion-item-body > *:last-child {
+  margin-bottom: 0;
+}

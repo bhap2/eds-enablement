@@ -1,57 +1,102 @@
+/*
+ * Banner — full-bleed image card with a gradient overlay and text/CTA
+ * anchored to the bottom-left. Source: wknd-trendsetters.site closing CTA.
+ */
 main .banner {
-  --banner-bg-color: #0a5bd3;
-  --banner-text-color: #fff;
-
-  background-color: var(--banner-bg-color);
-  color: var(--banner-text-color);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-/* dark variant */
-main .banner.dark {
-  --banner-bg-color: #1a1a1a;
-  --banner-text-color: #fff;
-}
-
-main .banner .banner-content {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 32px 24px;
-  text-align: center;
+  align-items: flex-end;
+  min-height: 420px;
+  border-radius: 20px;
+  overflow: clip;
+  color: #fff;
 }
 
+/* image fills the card */
 main .banner .banner-image {
-  width: 100%;
-  max-width: 480px;
+  position: absolute;
+  inset: 0;
+  margin: 0;
 }
 
-main .banner .banner-image picture {
-  display: block;
-}
-
+main .banner .banner-image picture,
 main .banner .banner-image img {
   display: block;
   width: 100%;
-  height: auto;
-  border-radius: 4px;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* dark gradient so overlaid text stays legible */
+main .banner .banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 70%) 0%, rgb(0 0 0 / 0%) 60%);
+}
+
+/* text content sits above the image + overlay */
+main .banner .banner-content {
+  position: relative;
+  z-index: 1;
+  max-width: 672px;
+  padding: 32px 24px;
+}
+
+main .banner .banner-content > * {
+  color: #fff;
 }
 
 main .banner .banner-title {
   margin: 0;
-  color: var(--banner-text-color);
+  color: #fff;
   font-family: var(--heading-font-family);
-  font-size: var(--heading-font-size-l);
+  font-size: var(--heading-font-size-xxl);
+}
+
+main .banner .banner-content p {
+  margin: 16px 0 0;
+  font-size: var(--body-font-size-m);
+  line-height: 1.6;
+}
+
+/* CTA — white pill button on the dark image */
+main .banner .banner-content .button-container {
+  margin: 24px 0 0;
+}
+
+main .banner .banner-content a.button:any-link {
+  border-color: #fff;
+  background-color: #fff;
+  color: #000;
+  font-weight: 600;
+  padding: 12px 24px;
+}
+
+main .banner .banner-content a.button:any-link:hover,
+main .banner .banner-content a.button:any-link:focus-visible {
+  border-color: var(--light-color);
+  background-color: var(--light-color);
+  color: #000;
+  text-decoration: none;
+}
+
+/* dark variant keeps the same treatment (kept for backward compat) */
+main .banner.dark .banner-overlay {
+  background: linear-gradient(to top, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 15%) 100%);
 }
 
 @media (width >= 900px) {
+  main .banner {
+    min-height: 559px;
+  }
+
   main .banner .banner-content {
-    flex-direction: row;
-    justify-content: center;
-    text-align: left;
-    gap: 40px;
-    padding: 48px 40px;
+    padding: 64px;
+  }
+
+  main .banner .banner-title {
+    font-size: 56px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
   }
 }

@@ -1,0 +1,44 @@
+/*
+ * Cards (gallery variant)
+ * Borderless, square-image photo grid with tight gutters.
+ * 4 columns desktop, 2 tablet, 1 mobile.
+ * Source: wknd-trendsetters.site "Style in every snapshot" grid.
+ */
+main .cards-gallery > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+main .cards-gallery > ul > li {
+  border: none;
+  background-color: transparent;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+main .cards-gallery .cards-gallery-card-image {
+  line-height: 0;
+}
+
+main .cards-gallery > ul > li img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+@media (width >= 600px) {
+  main .cards-gallery > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 900px) {
+  main .cards-gallery > ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

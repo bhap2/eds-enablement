@@ -1,0 +1,38 @@
+{
+  "variantName": "cards-testimonial",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-08-26T00:00:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://wknd-trendsetters.site/",
+    "originPage": "homepage - testimonials tab switcher (simplified)",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "testimonial",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "image + name + role + quote",
+    "buttonCount": 0,
+    "imageCount": 4
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "testimonial / quote grids",
+      "team or people showcases with a quote",
+      "sections converted from tab/carousel switchers"
+    ],
+    "notSuitableFor": [
+      "linked article cards",
+      "plain image galleries"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-26T00:00:00.000Z"
+  }
+}
