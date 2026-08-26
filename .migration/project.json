@@ -1,0 +1,11 @@
+{
+  "type": "da",
+  "sites": {
+    "eds-enablement": {
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json",
+      "previewOrg": "bhap2",
+      "previewSite": "eds-enablement",
+      "contentHostUrl": "https://content.da.live/bhap2/eds-enablement/"
+    }
+  }
+}
