@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity */
+
 .columns > div {
   display: flex;
   flex-direction: column;
@@ -29,6 +31,86 @@
   .columns > div > div {
     flex: 1;
     order: unset;
+  }
+}
+
+/* ---- hero variant (homepage masthead: text + image cluster) ---- */
+
+/* 2x2 grid, 3 images auto-placed (top-left, top-right, bottom-left), 4th cell empty */
+main .columns.columns-hero .columns-img-cluster {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* each image wrapper (a <p> holding one picture) — min-width:0 stops the images
+   from overflowing their grid track */
+main .columns.columns-hero .columns-img-cluster > * {
+  min-width: 0;
+  margin: 0;
+}
+
+main .columns.columns-hero .columns-img-cluster picture,
+main .columns.columns-hero .columns-img-cluster img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* CTA row: two links share one paragraph, so EDS does not auto-button them.
+   Style them here — first link a filled pill, second an outlined pill. */
+main .columns.columns-hero > div > div:first-child > p:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+main .columns.columns-hero > div > div:first-child > p:last-child a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--text-color);
+  border-radius: 2.4em;
+  padding: 12px 28px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+main .columns.columns-hero > div > div:first-child > p:last-child a:first-child {
+  background-color: var(--text-color);
+  color: var(--background-color);
+}
+
+main .columns.columns-hero > div > div:first-child > p:last-child a:last-child {
+  background-color: transparent;
+  color: var(--text-color);
+}
+
+main .columns.columns-hero > div > div:first-child > p:last-child a:hover {
+  text-decoration: none;
+}
+
+main .columns.columns-hero > div > div:first-child > p:last-child a:first-child:hover {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+}
+
+main .columns.columns-hero > div > div:first-child > p:last-child a:last-child:hover {
+  background-color: var(--light-color);
+}
+
+@media (width >= 900px) {
+  main .columns.columns-hero > div {
+    align-items: start;
+  }
+
+  main .columns.columns-hero .columns-img-cluster {
+    gap: 16px;
   }
 }
 

@@ -16,7 +16,7 @@ indices:
         value: |
           path
       title:
-        select: head > day[property="og:title"]
+        select: head > meta[property="og:title"]
         value: |
           attribute(el, "content")
       description:

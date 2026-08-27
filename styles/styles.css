@@ -306,10 +306,41 @@ main > .section:first-of-type {
   }
 }
 
-/* section metadata */
+/* section metadata — full-bleed background bands (WKND) */
 main .section.light,
-main .section.highlight {
-  background-color: var(--light-color);
+main .section.highlight,
+main .section.dark {
   margin: 0;
-  padding: 40px 0;
+  padding: 64px 0;
+}
+
+/* light grey band */
+main .section.light {
+  background-color: var(--light-color);
+}
+
+/* yellow highlight band (WKND signature CTA) */
+main .section.highlight {
+  background-color: #f4fe8b;
+}
+
+/* dark band — light text on black */
+main .section.dark {
+  background-color: var(--dark-color);
+  color: #fff;
+}
+
+main .section.dark h1,
+main .section.dark h2,
+main .section.dark h3,
+main .section.dark p {
+  color: #fff;
+}
+
+@media (width >= 900px) {
+  main .section.light,
+  main .section.highlight,
+  main .section.dark {
+    padding: 96px 0;
+  }
 }

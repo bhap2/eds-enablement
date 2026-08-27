@@ -16,6 +16,19 @@ export default function decorate(block) {
     });
   });
 
+  // hero image-cluster variant: a column whose only content is multiple pictures
+  // (each in its own <p>/<div>). The homepage masthead pairs a text column with a
+  // cluster of 3 images. Tag the column so CSS can lay them out as a compact grid
+  // of rounded thumbnails instead of full-width stacked images.
+  const clusterCol = [...block.querySelectorAll(':scope > div > div')].find((col) => {
+    const pics = col.querySelectorAll('picture');
+    return pics.length > 1 && col.querySelectorAll('h1, h2, h3, h4, h5, h6').length === 0;
+  });
+  if (clusterCol) {
+    clusterCol.classList.add('columns-img-cluster');
+    block.classList.add('columns-hero');
+  }
+
   // article-header variant: a text column that begins with a breadcrumb
   // paragraph (two or more links) followed by an <h1>. Enhance the flat
   // meta paragraphs into grouped rows + a category pill.
