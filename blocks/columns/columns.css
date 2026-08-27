@@ -156,6 +156,46 @@ main .columns.columns-hero > div > div:first-child > p:last-child a:last-child:h
   }
 }
 
+/* ---- featured variant (image + breadcrumb/heading/meta, 2-col) ---- */
+main .columns.columns-featured > div {
+  align-items: center;
+  gap: 48px;
+}
+
+main .columns.columns-featured img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* breadcrumb row: "Home > Case studies" */
+main .columns.columns-featured > div > div:last-child > p:first-child {
+  margin: 0 0 12px;
+  font-size: var(--body-font-size-s);
+}
+
+main .columns.columns-featured > div > div:last-child > p:first-child a:any-link {
+  color: var(--link-color);
+}
+
+main .columns.columns-featured > div > div:last-child > p:first-child a + a::before {
+  content: "\203A";
+  margin: 0 8px;
+  color: var(--link-color);
+}
+
+main .columns.columns-featured h2 {
+  margin: 0 0 12px;
+}
+
+/* meta lines (author / date) */
+main .columns.columns-featured > div > div:last-child > p:not(:first-child) {
+  margin: 0;
+  font-size: var(--body-font-size-xs);
+  color: var(--link-color);
+}
+
 /* ---- contact variant (Email / Phone / Address as a row) ---- */
 main .columns.columns-contact .columns-contact-item {
   margin: 0;
