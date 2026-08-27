@@ -44,19 +44,30 @@ function readConfig(block) {
 }
 
 /**
+ * Cleans a raw index title: strips the "| Site Name" / "— Site Name" suffix
+ * that the document title template appends, so cards show just the headline.
+ * @param {string} raw the indexed title
+ */
+function cleanTitle(raw) {
+  if (!raw) return '';
+  return raw.replace(/\s*[|–—-]\s*Fashion Blog\s*$/i, '').trim();
+}
+
+/**
  * Builds one article card element.
  * @param {object} item an index row
  */
 function renderArticle(item) {
   const li = document.createElement('li');
   li.className = 'article-list-item';
+  const title = cleanTitle(item.title) || item.path;
 
   if (item.image) {
     const picWrap = document.createElement('div');
     picWrap.className = 'article-list-image';
     const link = document.createElement('a');
     link.href = item.path;
-    link.append(createOptimizedPicture(item.image, item.title || '', false, [{ width: '750' }]));
+    link.append(createOptimizedPicture(item.image, title, false, [{ width: '750' }]));
     picWrap.append(link);
     li.append(picWrap);
   }
@@ -64,12 +75,31 @@ function renderArticle(item) {
   const body = document.createElement('div');
   body.className = 'article-list-body';
 
-  const title = document.createElement('h3');
+  // meta row: category pill + date, when the index provides them
+  if (item.category || item.date) {
+    const meta = document.createElement('div');
+    meta.className = 'article-list-meta';
+    if (item.category) {
+      const cat = document.createElement('span');
+      cat.className = 'article-list-category';
+      cat.textContent = item.category;
+      meta.append(cat);
+    }
+    if (item.date) {
+      const date = document.createElement('span');
+      date.className = 'article-list-date';
+      date.textContent = item.date;
+      meta.append(date);
+    }
+    body.append(meta);
+  }
+
+  const titleEl = document.createElement('h3');
   const titleLink = document.createElement('a');
   titleLink.href = item.path;
-  titleLink.textContent = item.title || item.path;
-  title.append(titleLink);
-  body.append(title);
+  titleLink.textContent = title;
+  titleEl.append(titleLink);
+  body.append(titleEl);
 
   if (item.description) {
     const desc = document.createElement('p');
