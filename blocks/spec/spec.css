@@ -1,0 +1,34 @@
+/* Spec — two-column key/value table */
+main .spec {
+  margin: 24px 0;
+  border-top: 1px solid #e8e8e8;
+}
+
+main .spec .spec-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+main .spec .spec-label {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+main .spec .spec-value {
+  color: var(--link-color);
+}
+
+main .spec .spec-label strong {
+  font-weight: 600;
+}
+
+@media (width >= 600px) {
+  main .spec .spec-row {
+    grid-template-columns: 240px 1fr;
+    gap: 24px;
+    align-items: baseline;
+  }
+}

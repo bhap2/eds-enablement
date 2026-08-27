@@ -23,12 +23,21 @@ function readConfig(block) {
   const link = block.querySelector('a');
   const [, prefixRow, limitRow] = rows;
 
-  const indexPath = link ? link.getAttribute('href') : (rows[0]?.textContent.trim() || '');
+  // Prefer the link text over its href: authoring/publishing can mangle a
+  // path-like href (e.g. "/query-index.json" → "/query-index-json"), but the
+  // visible text keeps the intended value. Fall back to href, then the default.
+  const rawText = link ? link.textContent.trim() : (rows[0]?.textContent.trim() || '');
+  const rawHref = link ? (link.getAttribute('href') || '') : '';
+  let indexPath = rawText || rawHref || DEFAULT_INDEX;
+
+  // Guard against a mangled path: a valid index path must end in .json.
+  if (!/\.json$/i.test(indexPath)) indexPath = DEFAULT_INDEX;
+
   const prefix = prefixRow ? prefixRow.textContent.trim() : '';
   const limit = limitRow ? parseInt(limitRow.textContent.trim(), 10) : 0;
 
   return {
-    indexPath: indexPath || DEFAULT_INDEX,
+    indexPath,
     prefix,
     limit: Number.isNaN(limit) ? 0 : limit,
   };
