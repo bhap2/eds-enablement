@@ -270,3 +270,23 @@ header nav .nav-sections ul > li > ul > li {
 header nav .nav-tools {
   grid-area: tools;
 }
+
+/* Subscribe CTA — black pill button (matches source) */
+header nav .nav-tools a:any-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  background-color: var(--text-color);
+  color: var(--background-color);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+header nav .nav-tools a:hover {
+  background-color: var(--dark-color);
+  color: var(--background-color);
+  text-decoration: none;
+}
