@@ -48,13 +48,15 @@
 
 @media (width >= 900px) {
   :root {
-    /* heading sizes (desktop) — extracted computed values */
+    /* heading sizes (desktop) — extracted from source computed values.
+       Source uses h1/h2 section headings at 40px, h3 at 32px; the homepage
+       hero h1 is larger (56px) and is set in the columns-hero variant. */
     --heading-font-size-xxl: 40px;
-    --heading-font-size-xl: 32px;
-    --heading-font-size-l: 18px;
-    --heading-font-size-m: 16px;
-    --heading-font-size-s: 14px;
-    --heading-font-size-xs: 13px;
+    --heading-font-size-xl: 40px;
+    --heading-font-size-l: 32px;
+    --heading-font-size-m: 20px;
+    --heading-font-size-s: 16px;
+    --heading-font-size-xs: 14px;
   }
 }
 
@@ -319,9 +321,21 @@ main .section.light {
   background-color: var(--light-color);
 }
 
-/* yellow highlight band (WKND signature CTA) */
+/* yellow highlight band (WKND signature CTA) — centered content */
 main .section.highlight {
   background-color: #f4fe8b;
+  text-align: center;
+}
+
+main .section.highlight .default-content-wrapper {
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+/* center the CTA button row */
+main .section.highlight .button-wrapper,
+main .section.highlight p {
+  margin-inline: auto;
 }
 
 /* dark band — light text on black */

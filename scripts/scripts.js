@@ -74,6 +74,41 @@ function buildWidgetAutoBlocks(main) {
 }
 
 /**
+ * Wraps a "featured masthead" default-content pattern into a two-column block.
+ * The WKND homepage/landing masthead is imported as loose default content:
+ * an image paragraph, then a breadcrumb paragraph (2 links), a heading, and
+ * meta paragraphs. The source renders this as image-left / text-right. Detect
+ * that shape and rebuild it as a `columns` block (columns-article-header) so
+ * the existing two-column styling applies.
+ * @param {Element} main The container element
+ */
+function buildFeaturedAutoBlocks(main) {
+  main.querySelectorAll(':scope > div').forEach((section) => {
+    if (section.querySelector('.block')) return; // block-driven section, skip
+    const kids = [...section.children];
+    if (kids.length < 3) return;
+
+    const [first, second] = kids;
+    const firstIsImage = first.tagName === 'P' && first.querySelector('picture')
+      && first.textContent.trim() === '';
+    const secondIsBreadcrumb = second && second.tagName === 'P'
+      && second.querySelectorAll('a').length >= 2;
+    const hasHeading = kids.some((k) => /^H[12]$/.test(k.tagName));
+    if (!firstIsImage || !secondIsBreadcrumb || !hasHeading) return;
+
+    // image cell = the picture; text cell = everything after it
+    const imageCell = document.createElement('div');
+    imageCell.append(first.querySelector('picture'));
+    const textCell = document.createElement('div');
+    kids.slice(1).forEach((k) => textCell.append(k));
+
+    const block = buildBlock('columns', [[imageCell, textCell]]);
+    block.classList.add('columns-featured');
+    section.replaceChildren(block);
+  });
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -97,6 +132,7 @@ function buildAutoBlocks(main) {
       });
     }
     buildWidgetAutoBlocks(main);
+    buildFeaturedAutoBlocks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

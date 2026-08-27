@@ -21,6 +21,11 @@
   display: block;
 }
 
+/* rounded feature/article images, but NOT the gallery (square-cornered) */
+.columns:not(.columns-gallery) > div > .columns-img-col img {
+  border-radius: 20px;
+}
+
 @media (width >= 900px) {
   .columns > div {
     align-items: center;
@@ -64,6 +69,19 @@ main .columns.columns-gallery img {
 }
 
 /* ---- hero variant (homepage masthead: text + image cluster) ---- */
+
+/* hero heading is larger than the body h1 (source: 56px) */
+main .columns.columns-hero h1 {
+  font-size: 40px;
+}
+
+@media (width >= 900px) {
+  main .columns.columns-hero h1 {
+    font-size: 56px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+}
 
 /* 2x2 grid, 3 images auto-placed (top-left, top-right, bottom-left), 4th cell empty */
 main .columns.columns-hero .columns-img-cluster {
@@ -140,6 +158,73 @@ main .columns.columns-hero > div > div:first-child > p:last-child a:last-child:h
 
   main .columns.columns-hero .columns-img-cluster {
     gap: 16px;
+  }
+}
+
+/* ---- featured variant (image + breadcrumb/heading/meta, 2-col) ---- */
+main .columns.columns-featured > div {
+  align-items: center;
+  gap: 48px;
+}
+
+main .columns.columns-featured img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+/* breadcrumb row: "Home > Case studies" */
+main .columns.columns-featured > div > div:last-child > p:first-child {
+  margin: 0 0 12px;
+  font-size: var(--body-font-size-s);
+}
+
+main .columns.columns-featured > div > div:last-child > p:first-child a:any-link {
+  color: var(--link-color);
+}
+
+main .columns.columns-featured > div > div:last-child > p:first-child a + a::before {
+  content: "\203A";
+  margin: 0 8px;
+  color: var(--link-color);
+}
+
+main .columns.columns-featured h2 {
+  margin: 0 0 12px;
+}
+
+/* meta lines (author / date) */
+main .columns.columns-featured > div > div:last-child > p:not(:first-child) {
+  margin: 0;
+  font-size: var(--body-font-size-xs);
+  color: var(--link-color);
+}
+
+/* ---- contact variant (Email / Phone / Address as a row) ---- */
+main .columns.columns-contact .columns-contact-item {
+  margin: 0;
+}
+
+main .columns.columns-contact .columns-contact-item h3 {
+  margin: 0 0 4px;
+  font-size: var(--body-font-size-s);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+main .columns.columns-contact .columns-contact-item p {
+  margin: 0;
+  color: var(--link-color);
+}
+
+@media (width >= 600px) {
+  /* the contact cell (2nd column child) lays its items out as a 3-col row */
+  main .columns.columns-contact > div > div:last-child {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-content: start;
   }
 }
 
