@@ -19,6 +19,10 @@
 
 .columns > div > .columns-img-col img {
   display: block;
+}
+
+/* rounded feature/article images, but NOT the gallery (square-cornered) */
+.columns:not(.columns-gallery) > div > .columns-img-col img {
   border-radius: 20px;
 }
 
