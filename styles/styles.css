@@ -321,9 +321,21 @@ main .section.light {
   background-color: var(--light-color);
 }
 
-/* yellow highlight band (WKND signature CTA) */
+/* yellow highlight band (WKND signature CTA) — centered content */
 main .section.highlight {
   background-color: #f4fe8b;
+  text-align: center;
+}
+
+main .section.highlight .default-content-wrapper {
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+/* center the CTA button row */
+main .section.highlight .button-wrapper,
+main .section.highlight p {
+  margin-inline: auto;
 }
 
 /* dark band — light text on black */

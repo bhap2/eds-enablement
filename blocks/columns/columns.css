@@ -19,6 +19,7 @@
 
 .columns > div > .columns-img-col img {
   display: block;
+  border-radius: 20px;
 }
 
 @media (width >= 900px) {
