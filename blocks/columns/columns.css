@@ -65,6 +65,19 @@ main .columns.columns-gallery img {
 
 /* ---- hero variant (homepage masthead: text + image cluster) ---- */
 
+/* hero heading is larger than the body h1 (source: 56px) */
+main .columns.columns-hero h1 {
+  font-size: 40px;
+}
+
+@media (width >= 900px) {
+  main .columns.columns-hero h1 {
+    font-size: 56px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+}
+
 /* 2x2 grid, 3 images auto-placed (top-left, top-right, bottom-left), 4th cell empty */
 main .columns.columns-hero .columns-img-cluster {
   display: grid;
