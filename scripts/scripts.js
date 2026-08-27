@@ -109,6 +109,42 @@ function buildFeaturedAutoBlocks(main) {
 }
 
 /**
+ * Wraps a FAQ default-content pattern into an accordion block. The homepage
+ * FAQ section imports as loose content: an intro heading/paragraph followed by
+ * an even run of alternating question / answer paragraphs. The dedicated FAQ
+ * page gets a real accordion; the homepage did not. Detect the alternating
+ * Q/A tail and rebuild it as an `accordion` block so it renders as collapsible
+ * cards, matching the source and the FAQ page.
+ * @param {Element} main The container element
+ */
+function buildFaqAutoBlocks(main) {
+  main.querySelectorAll(':scope > div').forEach((section) => {
+    if (section.querySelector('.block')) return; // block-driven section, skip
+    const heading = section.querySelector('h2, h3');
+    if (!heading || !/questions|faq|answers/i.test(heading.textContent)) return;
+
+    // collect the run of consecutive <p> siblings after the intro paragraph(s)
+    const paras = [...section.children].filter((el) => el.tagName === 'P');
+    // the FAQ Q/A run is the trailing paragraphs; require an even count >= 4
+    // (question then answer). Skip a leading tagline paragraph if it makes odd.
+    let qa = paras;
+    if (qa.length % 2 !== 0) qa = qa.slice(1); // drop the intro tagline
+    if (qa.length < 4) return;
+
+    const anchor = qa[0];
+    const rows = [];
+    for (let i = 0; i < qa.length; i += 2) {
+      // pass the question/answer text as cell content; buildBlock wraps each
+      // cell in its own <div>, yielding the [label][body] rows accordion wants
+      rows.push([qa[i].innerHTML, qa[i + 1].innerHTML]);
+    }
+    const block = buildBlock('accordion', rows);
+    anchor.before(block);
+    qa.forEach((p) => p.remove());
+  });
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -133,6 +169,7 @@ function buildAutoBlocks(main) {
     }
     buildWidgetAutoBlocks(main);
     buildFeaturedAutoBlocks(main);
+    buildFaqAutoBlocks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
