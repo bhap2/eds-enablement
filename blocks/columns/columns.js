@@ -41,6 +41,29 @@ export default function decorate(block) {
     block.classList.add('columns-hero');
   }
 
+  // contact variant: a column that holds several heading+detail groups
+  // (e.g. Email / Phone / Address). The source lays these out as a row of
+  // sub-columns; the import flattens them into one stacked cell. Detect a
+  // cell with 3+ headings and wrap each heading (plus the content up to the
+  // next heading) into its own contact item, laid out as a row.
+  const contactCol = [...block.querySelectorAll(':scope > div > div')].find(
+    (col) => col.querySelectorAll(':scope > h3').length >= 3,
+  );
+  if (contactCol) {
+    block.classList.add('columns-contact');
+    const groups = [];
+    let current = null;
+    [...contactCol.children].forEach((child) => {
+      if (child.tagName === 'H3') {
+        current = document.createElement('div');
+        current.className = 'columns-contact-item';
+        groups.push(current);
+      }
+      if (current) current.append(child);
+    });
+    contactCol.replaceChildren(...groups);
+  }
+
   // article-header variant: a text column that begins with a breadcrumb
   // paragraph (two or more links) followed by an <h1>. Enhance the flat
   // meta paragraphs into grouped rows + a category pill.

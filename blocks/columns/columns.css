@@ -143,6 +143,33 @@ main .columns.columns-hero > div > div:first-child > p:last-child a:last-child:h
   }
 }
 
+/* ---- contact variant (Email / Phone / Address as a row) ---- */
+main .columns.columns-contact .columns-contact-item {
+  margin: 0;
+}
+
+main .columns.columns-contact .columns-contact-item h3 {
+  margin: 0 0 4px;
+  font-size: var(--body-font-size-s);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+main .columns.columns-contact .columns-contact-item p {
+  margin: 0;
+  color: var(--link-color);
+}
+
+@media (width >= 600px) {
+  /* the contact cell (2nd column child) lays its items out as a 3-col row */
+  main .columns.columns-contact > div > div:last-child {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-content: start;
+  }
+}
+
 /* ---- article-header variant (blog post header) ---- */
 main .columns.columns-article-header > div {
   gap: 24px;
