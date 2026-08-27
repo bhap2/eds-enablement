@@ -1,31 +1,22 @@
 /*
- * Cards (testimonial variant)
- * Person photo + name/role + quote per card. Borderless cards with a
- * large rounded photo, matching the source testimonial styling.
- * Source: wknd-trendsetters.site homepage testimonials.
+ * Cards (testimonial variant) — tabbed carousel.
+ * A large featured panel (photo + name/role/quote) with a tab strip below;
+ * the active tab is highlighted. Source: wknd-trendsetters.site testimonials.
  */
-main .cards-testimonial > ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+
+/* featured panel */
+main .cards-testimonial .cards-testimonial-panel {
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
+  align-items: center;
 }
 
-main .cards-testimonial > ul > li {
-  border: none;
-  background-color: transparent;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-main .cards-testimonial .cards-testimonial-card-image {
+main .cards-testimonial .cards-testimonial-panel-image {
   line-height: 0;
 }
 
-main .cards-testimonial .cards-testimonial-card-image img {
+main .cards-testimonial .cards-testimonial-panel-image img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
@@ -33,40 +24,76 @@ main .cards-testimonial .cards-testimonial-card-image img {
   border-radius: 20px;
 }
 
-main .cards-testimonial .cards-testimonial-card-body {
-  margin: 20px 0 0;
-}
-
-/* name — source uses body font, not the uppercase heading style */
-main .cards-testimonial .cards-testimonial-card-body h3 {
+main .cards-testimonial .cards-testimonial-panel-name {
   margin: 0;
-  font-family: var(--body-font-family);
   font-size: 20px;
   font-weight: 700;
   line-height: 1.6;
-  letter-spacing: normal;
-  text-transform: none;
   color: var(--text-color);
 }
 
-/* quote */
-main .cards-testimonial .cards-testimonial-card-body p {
+main .cards-testimonial .cards-testimonial-panel-role {
+  margin: 0;
+  color: var(--link-color);
+  font-size: var(--body-font-size-s);
+}
+
+main .cards-testimonial .cards-testimonial-panel-quote {
   margin: 16px 0 0;
   font-size: var(--body-font-size-m);
   line-height: 1.6;
   color: var(--text-color);
 }
 
-/* role — muted line directly under the name */
-main .cards-testimonial .cards-testimonial-card-body h3 + p {
-  margin: 0;
-  color: var(--link-color);
+/* tab strip */
+main .cards-testimonial .cards-testimonial-tablist {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+main .cards-testimonial .cards-testimonial-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  text-align: left;
+  padding: 16px 20px;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  background-color: var(--background-color);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+main .cards-testimonial .cards-testimonial-tab strong {
+  font-size: var(--body-font-size-m);
+  color: var(--text-color);
+}
+
+main .cards-testimonial .cards-testimonial-tab span {
   font-size: var(--body-font-size-s);
+  color: var(--link-color);
+}
+
+main .cards-testimonial .cards-testimonial-tab:hover {
+  border-color: var(--text-color);
+}
+
+main .cards-testimonial .cards-testimonial-tab.is-active {
+  border-color: var(--text-color);
+  background-color: var(--light-color);
 }
 
 @media (width >= 900px) {
-  main .cards-testimonial > ul {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px 40px;
+  main .cards-testimonial .cards-testimonial-panel {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+
+  main .cards-testimonial .cards-testimonial-tablist {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
   }
 }

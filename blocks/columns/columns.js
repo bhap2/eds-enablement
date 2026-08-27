@@ -16,6 +16,18 @@ export default function decorate(block) {
     });
   });
 
+  // gallery variant: a single row of many image-only columns (the homepage
+  // "Style in every snapshot" strip is 8 images). Render as an even photo grid
+  // instead of a squished flex row.
+  const firstRow = block.firstElementChild;
+  if (firstRow) {
+    const rowCols = [...firstRow.children];
+    const imgCols = rowCols.filter((c) => c.classList.contains('columns-img-col'));
+    if (rowCols.length >= 5 && imgCols.length === rowCols.length) {
+      block.classList.add('columns-gallery');
+    }
+  }
+
   // hero image-cluster variant: a column whose only content is multiple pictures
   // (each in its own <p>/<div>). The homepage masthead pairs a text column with a
   // cluster of 3 images. Tag the column so CSS can lay them out as a compact grid
