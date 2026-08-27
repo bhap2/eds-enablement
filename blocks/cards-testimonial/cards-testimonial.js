@@ -84,4 +84,21 @@ export default function decorate(block) {
 
   select(0);
   block.replaceChildren(panel, tablist);
+
+  // Cleanup: the import leaves stray name-only paragraphs (the source tab
+  // labels) in a sibling default-content-wrapper within the same section. They
+  // duplicate the tab strip, so remove any <p> in this section whose text
+  // matches one of the testimonial names. Drop an emptied wrapper too.
+  const names = new Set(items.map((it) => it.name));
+  const section = block.closest('.section') || block.parentElement;
+  if (section) {
+    section.querySelectorAll('p').forEach((p) => {
+      if (block.contains(p)) return;
+      if (names.has(p.textContent.trim())) {
+        const dcw = p.closest('.default-content-wrapper');
+        p.remove();
+        if (dcw && dcw.children.length === 0) dcw.remove();
+      }
+    });
+  }
 }
