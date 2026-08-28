@@ -1,66 +1,54 @@
 /**
  * loads and decorates the banner block
  *
- * Expected content model (two rows):
- *   row 1: an image (full-bleed background)
- *   row 2: heading + optional supporting text + optional CTA link
+ * Content model (rows, all optional except title):
+ *   row 1: an image
+ *   row 2: title text
+ *   row 3: (optional) a background colour — a CSS colour value or a named
+ *          token like "blue" / "dark". Defaults to blue when not provided.
  *
- * Renders a full-bleed image card with a gradient overlay and the text
- * content laid over the bottom-left of the image.
+ * Renders the image and title on a solid background. Defaults to the blue
+ * style; the `dark` variant (authored as the block option `banner (dark)`)
+ * renders a dark background instead.
  *
  * @param {Element} block The banner block element
  */
-export default async function decorate(block) {
+export default function decorate(block) {
+  const rows = [...block.children];
+
+  // image (first picture found anywhere in the block)
   const picture = block.querySelector('picture');
 
-  // gather all non-image content nodes, in document order
-  const contentNodes = [];
-  block.querySelectorAll(':scope > div > div').forEach((cell) => {
+  // title = first cell of text content that isn't the image
+  let titleText = '';
+  let bgValue = '';
+  rows.forEach((row) => {
+    const cell = row.querySelector(':scope > div') || row;
     if (cell.querySelector('picture')) return;
-    [...cell.childNodes].forEach((node) => contentNodes.push(node));
+    const text = cell.textContent.trim();
+    if (!text) return;
+    if (!titleText) titleText = text; // first non-image text is the title
+    else if (!bgValue) bgValue = text; // next non-image text is the bg colour
   });
 
-  const content = document.createElement('div');
-  content.className = 'banner-content';
-
-  contentNodes.forEach((node) => content.append(node));
-
-  // if there is text but no heading, promote the first non-empty block to h2
-  if (content.textContent.trim() && !content.querySelector('h1, h2, h3, h4, h5, h6')) {
-    const firstText = [...content.children].find((el) => el.textContent.trim())
-      || content.firstElementChild;
-    const title = document.createElement('h2');
-    if (firstText) {
-      title.append(...firstText.childNodes);
-      firstText.replaceWith(title);
-    } else {
-      title.textContent = content.textContent.trim();
-      content.textContent = '';
-      content.append(title);
-    }
-  }
-
-  // ensure headings carry the banner-title hook for styling
-  content.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((h) => {
-    h.classList.add('banner-title');
-  });
-
-  // decorate a standalone CTA link as a button (block internals are not
-  // auto-decorated by EDS decorateButtons)
-  content.querySelectorAll('p').forEach((p) => {
-    const link = p.querySelector('a');
-    if (link && p.textContent.trim() === link.textContent.trim()) {
-      link.classList.add('button');
-      p.classList.add('button-container');
-    }
-  });
-
+  // build the image element
   const image = document.createElement('div');
   image.className = 'banner-image';
   if (picture) image.append(picture);
 
-  const overlay = document.createElement('div');
-  overlay.className = 'banner-overlay';
+  // build the content (title)
+  const content = document.createElement('div');
+  content.className = 'banner-content';
+  const title = document.createElement('h2');
+  title.className = 'banner-title';
+  title.textContent = titleText;
+  content.append(title);
 
-  block.replaceChildren(image, overlay, content);
+  // apply an authored background colour when provided (skip the named tokens
+  // that map to CSS variants). Default styling (blue) comes from CSS.
+  if (bgValue && !['blue', 'dark'].includes(bgValue.toLowerCase())) {
+    block.style.backgroundColor = bgValue;
+  }
+
+  block.replaceChildren(image, content);
 }

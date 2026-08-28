@@ -1,102 +1,55 @@
 /*
- * Banner — full-bleed image card with a gradient overlay and text/CTA
- * anchored to the bottom-left. Source: wknd-trendsetters.site closing CTA.
+ * Banner — image + title on a solid background.
+ * Defaults to blue; the `dark` variant renders a dark background.
  */
 main .banner {
-  position: relative;
   display: flex;
-  align-items: flex-end;
-  min-height: 420px;
-  border-radius: 20px;
-  overflow: clip;
+  align-items: center;
+  gap: 24px;
+  padding: 32px;
+  border-radius: 12px;
+  background-color: #1473e6; /* default blue */
   color: #fff;
 }
 
-/* image fills the card */
 main .banner .banner-image {
-  position: absolute;
-  inset: 0;
+  flex: 0 0 auto;
   margin: 0;
+  line-height: 0;
 }
 
 main .banner .banner-image picture,
 main .banner .banner-image img {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 200px;
+  height: auto;
+  border-radius: 8px;
 }
 
-/* dark gradient so overlaid text stays legible */
-main .banner .banner-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgb(0 0 0 / 70%) 0%, rgb(0 0 0 / 0%) 60%);
-}
-
-/* text content sits above the image + overlay */
 main .banner .banner-content {
-  position: relative;
-  z-index: 1;
-  max-width: 672px;
-  padding: 32px 24px;
-}
-
-main .banner .banner-content > * {
-  color: #fff;
+  flex: 1 1 auto;
 }
 
 main .banner .banner-title {
   margin: 0;
   color: #fff;
   font-family: var(--heading-font-family);
-  font-size: var(--heading-font-size-xxl);
+  font-size: var(--heading-font-size-xl);
+  line-height: 1.1;
 }
 
-main .banner .banner-content p {
-  margin: 16px 0 0;
-  font-size: var(--body-font-size-m);
-  line-height: 1.6;
-}
-
-/* CTA — white pill button on the dark image */
-main .banner .banner-content .button-container {
-  margin: 24px 0 0;
-}
-
-main .banner .banner-content a.button:any-link {
-  border-color: #fff;
-  background-color: #fff;
-  color: #000;
-  font-weight: 600;
-  padding: 12px 24px;
-}
-
-main .banner .banner-content a.button:any-link:hover,
-main .banner .banner-content a.button:any-link:focus-visible {
-  border-color: var(--light-color);
-  background-color: var(--light-color);
-  color: #000;
-  text-decoration: none;
-}
-
-/* dark variant keeps the same treatment (kept for backward compat) */
-main .banner.dark .banner-overlay {
-  background: linear-gradient(to top, rgb(0 0 0 / 80%) 0%, rgb(0 0 0 / 15%) 100%);
+/* dark variant — dark background instead of blue */
+main .banner.dark {
+  background-color: #1d1d1d;
 }
 
 @media (width >= 900px) {
   main .banner {
-    min-height: 559px;
+    padding: 48px;
   }
 
-  main .banner .banner-content {
-    padding: 64px;
-  }
-
-  main .banner .banner-title {
-    font-size: 56px;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+  main .banner .banner-image picture,
+  main .banner .banner-image img {
+    width: 280px;
   }
 }
