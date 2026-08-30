@@ -31,6 +31,12 @@ main .image-compare .image-compare-left img {
   max-width: none;
 }
 
+/* grayscale variant: same scene on both sides, base rendered black-and-white
+   so the slider reveals a clear color vs. B&W difference (classic demo). */
+main .image-compare.grayscale .image-compare-right img {
+  filter: grayscale(1);
+}
+
 main .image-compare:hover .image-compare-left {
   border-right-color: rgb(255 255 255 / 90%);
 }
