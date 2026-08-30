@@ -6,10 +6,15 @@ main .image-compare {
 
 main .image-compare img {
   display: block;
-  width: 100%;
   height: auto;
 }
 
+/* base (right) image fills the block width and sets its height */
+main .image-compare .image-compare-right img {
+  width: 100%;
+}
+
+/* overlay clipping container: half width, hides the overflowing image */
 main .image-compare .image-compare-left {
   position: absolute;
   top: 0;
@@ -17,6 +22,13 @@ main .image-compare .image-compare-left {
   width: 50%;
   overflow: hidden;
   border-right: 2px solid rgb(255 255 255 / 60%);
+}
+
+/* overlay image keeps its full pixel width (set in JS) so it is clipped,
+   not shrunk, by the half-width container. max-width:none defeats the
+   global `main img { max-width: 100% }` rule that would otherwise shrink it. */
+main .image-compare .image-compare-left img {
+  max-width: none;
 }
 
 main .image-compare:hover .image-compare-left {

@@ -73,11 +73,24 @@ export default function decorate(block) {
     tab.type = 'button';
     tab.className = 'cards-testimonial-tab';
     tab.setAttribute('role', 'tab');
+
+    // avatar thumbnail (source shows a small round photo in each tab)
+    if (item.img) {
+      const avatar = document.createElement('span');
+      avatar.className = 'cards-testimonial-tab-avatar';
+      avatar.append(createOptimizedPicture(item.img.src, item.name, false, [{ width: '96' }]));
+      tab.append(avatar);
+    }
+
+    const text = document.createElement('span');
+    text.className = 'cards-testimonial-tab-text';
     const tabName = document.createElement('strong');
     tabName.textContent = item.name;
     const tabRole = document.createElement('span');
     tabRole.textContent = item.role;
-    tab.append(tabName, tabRole);
+    text.append(tabName, tabRole);
+    tab.append(text);
+
     tab.addEventListener('click', () => select(i));
     tablist.append(tab);
   });
