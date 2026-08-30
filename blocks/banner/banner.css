@@ -100,3 +100,59 @@ main .banner.dark .banner-overlay {
     letter-spacing: -0.02em;
   }
 }
+
+/*
+ * Solid variant — image + title on a solid background (blue by default).
+ * A separate design from the full-bleed image banner above: the image sits
+ * as a block within the card rather than filling it, and the title reads
+ * against a solid color. An authored color (row 3) overrides the default
+ * blue via an inline style; the `dark` variant forces a dark background.
+ */
+main .banner.solid {
+  display: block;
+  align-items: initial;
+  min-height: 0;
+  padding: 32px 24px;
+  background-color: #0057ff; /* default blue */
+  color: #fff;
+}
+
+main .banner.solid .banner-image {
+  position: static;
+  inset: auto;
+  margin: 0 0 24px;
+  border-radius: 12px;
+  overflow: clip;
+}
+
+main .banner.solid .banner-image picture,
+main .banner.solid .banner-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+main .banner.solid .banner-content {
+  max-width: none;
+  padding: 0;
+}
+
+main .banner.solid .banner-title {
+  color: #fff;
+}
+
+/* dark variant — solid dark background instead of blue */
+main .banner.solid.dark {
+  background-color: #111;
+}
+
+@media (width >= 900px) {
+  main .banner.solid {
+    min-height: 0;
+    padding: 48px;
+  }
+
+  main .banner.solid .banner-title {
+    font-size: var(--heading-font-size-xxl);
+  }
+}
