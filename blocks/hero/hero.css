@@ -35,3 +35,42 @@
     padding: 40px 32px;
   }
 }
+
+/* ---- video-background variant ---- */
+.hero.video {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 480px;
+  overflow: clip;
+}
+
+/* the video fills the hero, behind the text */
+.hero.video .hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* dark scrim so overlaid text stays legible on any footage */
+.hero.video::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(to bottom, rgb(0 0 0 / 40%), rgb(0 0 0 / 55%));
+}
+
+.hero.video h1,
+.hero.video p {
+  color: var(--background-color);
+}
+
+@media (width >= 900px) {
+  .hero.video {
+    min-height: 600px;
+  }
+}

@@ -51,6 +51,10 @@ main .columns.columns-gallery > div > div {
   order: unset;
   flex: none;
   margin: 0;
+
+  /* source rounds each photo tile (20px radius, clipped) */
+  border-radius: 20px;
+  overflow: clip;
 }
 
 main .columns.columns-gallery picture,
