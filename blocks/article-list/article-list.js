@@ -1,14 +1,22 @@
 /*
  * Article List Block
- * Fetches a query-index JSON feed and renders it as a dynamic list of
- * article cards. Because it reads the published index at render time,
- * publishing a new page makes it appear here automatically — no code change.
  *
- * Content model (all optional):
- *   row 1: link to the index JSON (defaults to /query-index.json)
- *   row 2: path prefix filter, e.g. /blog/ (only list pages under it)
- *   row 3: max number of items to show (defaults to 4, matching the source
- *          "Latest Articles" row)
+ * Two authoring modes:
+ *
+ * 1. Static cards (matches the source's curated "Latest Articles"): author one
+ *    row per card, each with cells:
+ *      [ image ] [ category ] [ date ] [ title (usually a link) ]
+ *    The category/date/title are authored content — no index lookup — so the
+ *    yellow category pills always render.
+ *
+ * 2. Dynamic index (all rows optional): when no card has an image, the block
+ *    reads a query-index JSON feed instead:
+ *      row 1: link to the index JSON (defaults to /query-index.json)
+ *      row 2: path prefix filter, e.g. /blog/ (only list pages under it)
+ *      row 3: max number of items to show (defaults to 4)
+ *    Because it reads the published index at render time, publishing a new page
+ *    makes it appear automatically — but category/date only show if the index
+ *    is configured to surface them.
  */
 
 import { createOptimizedPicture } from '../../scripts/aem.js';
@@ -72,7 +80,7 @@ function renderArticle(item) {
     picWrap.className = 'article-list-image';
     const link = document.createElement('a');
     link.href = item.path;
-    link.append(createOptimizedPicture(item.image, title, false, [{ width: '750' }]));
+    link.append(createOptimizedPicture(item.image, item.imageAlt || title, false, [{ width: '750' }]));
     picWrap.append(link);
     li.append(picWrap);
   }
@@ -126,10 +134,63 @@ function dateValue(item) {
 }
 
 /**
+ * Parses authored rows into static card items. A card row has an image plus
+ * text cells; the block is in static mode if any row contains an image.
+ * Cell order: [ image ][ category ][ date ][ title (link) ].
+ * @param {Element} block the article-list block
+ * @returns {Array|null} card items, or null when no static cards are authored
+ */
+function parseStaticCards(block) {
+  const rows = [...block.querySelectorAll(':scope > div')];
+  const cardRows = rows.filter((row) => row.querySelector('picture, img'));
+  if (!cardRows.length) return null;
+
+  return cardRows.map((row) => {
+    const cells = [...row.children];
+    const picCell = cells.find((c) => c.querySelector('picture, img'));
+    const textCells = cells.filter((c) => c !== picCell);
+
+    const img = picCell?.querySelector('img');
+    // the title is the cell that carries a link (or the last text cell)
+    const titleCell = textCells.find((c) => c.querySelector('a')) || textCells[textCells.length - 1];
+    const titleLink = titleCell?.querySelector('a');
+    const title = (titleLink || titleCell)?.textContent.trim() || '';
+    const path = titleLink?.getAttribute('href')
+      || picCell?.querySelector('a')?.getAttribute('href')
+      || '#';
+
+    // remaining text cells (before the title) are category then date
+    const meta = textCells
+      .filter((c) => c !== titleCell)
+      .map((c) => c.textContent.trim())
+      .filter(Boolean);
+
+    return {
+      path,
+      title,
+      image: img?.src || '',
+      imageAlt: img?.alt || title,
+      category: meta[0] || '',
+      publicationdate: meta[1] || '',
+    };
+  });
+}
+
+/**
  * loads and decorates the article-list block
  * @param {Element} block The article-list block element
  */
 export default async function decorate(block) {
+  // Static card mode — authored cards with their own category/date/title.
+  const staticCards = parseStaticCards(block);
+  if (staticCards) {
+    const list = document.createElement('ul');
+    list.className = 'article-list-items';
+    staticCards.forEach((item) => list.append(renderArticle(item)));
+    block.replaceChildren(list);
+    return;
+  }
+
   const { indexPath, prefix, limit } = readConfig(block);
 
   let items = [];
