@@ -1,0 +1,66 @@
+/*
+ * Quote Block — blockquote + attribution, styled to site tokens.
+ * Default (simple) variant is compact; the `medium` variant is larger and
+ * more prominent for feature sections.
+ */
+
+main .quote .quote-figure {
+  margin: 0;
+  padding: 24px 0;
+  border-left: 3px solid var(--text-color);
+  padding-left: 24px;
+}
+
+main .quote .quote-text {
+  margin: 0;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* attribution line */
+main .quote .quote-attribution {
+  margin-top: 12px;
+  color: var(--link-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-s);
+  font-style: normal;
+}
+
+/* prefix the attribution with an em dash */
+main .quote .quote-attribution::before {
+  content: "— ";
+}
+
+/*
+ * Medium variant — larger, centered, no rule; a bigger pull-quote for
+ * feature sections. Heading font gives it more presence.
+ */
+main .quote.medium .quote-figure {
+  border-left: 0;
+  padding: 40px 0;
+  max-width: 800px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+main .quote.medium .quote-text {
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-size-xl);
+  font-style: normal;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+main .quote.medium .quote-attribution {
+  margin-top: 20px;
+  font-size: var(--body-font-size-m);
+}
+
+@media (width >= 900px) {
+  main .quote.medium .quote-text {
+    font-size: var(--heading-size-xxl);
+  }
+}
