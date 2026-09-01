@@ -83,12 +83,6 @@ main .article-list .article-list-body h3 a:hover {
   color: var(--link-hover-color);
 }
 
-main .article-list .article-list-body p {
-  margin: 12px 0 0;
-  color: var(--link-color);
-  font-size: var(--body-font-size-xs);
-}
-
 @media (width >= 600px) {
   main .article-list .article-list-items {
     grid-template-columns: repeat(2, 1fr);

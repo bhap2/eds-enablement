@@ -7,12 +7,15 @@
  * Content model (all optional):
  *   row 1: link to the index JSON (defaults to /query-index.json)
  *   row 2: path prefix filter, e.g. /blog/ (only list pages under it)
- *   row 3: max number of items to show
+ *   row 3: max number of items to show (defaults to 4, matching the source
+ *          "Latest Articles" row)
  */
 
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
 const DEFAULT_INDEX = '/query-index.json';
+// The source "Latest Articles" section shows a single four-up row.
+const DEFAULT_LIMIT = 4;
 
 /**
  * Reads the block's authored rows into a simple config object.
@@ -34,12 +37,14 @@ function readConfig(block) {
   if (!/\.json$/i.test(indexPath)) indexPath = DEFAULT_INDEX;
 
   const prefix = prefixRow ? prefixRow.textContent.trim() : '';
-  const limit = limitRow ? parseInt(limitRow.textContent.trim(), 10) : 0;
+  const limitText = limitRow ? limitRow.textContent.trim() : '';
+  const parsedLimit = parseInt(limitText, 10);
 
   return {
     indexPath,
     prefix,
-    limit: Number.isNaN(limit) ? 0 : limit,
+    // default to a single four-up row unless the author overrides it
+    limit: Number.isNaN(parsedLimit) ? DEFAULT_LIMIT : parsedLimit,
   };
 }
 
@@ -76,7 +81,8 @@ function renderArticle(item) {
   body.className = 'article-list-body';
 
   // meta row: category pill + date, when the index provides them
-  if (item.category || item.date) {
+  const dateLabel = item.publicationdate || item.date || '';
+  if (item.category || dateLabel) {
     const meta = document.createElement('div');
     meta.className = 'article-list-meta';
     if (item.category) {
@@ -85,10 +91,10 @@ function renderArticle(item) {
       cat.textContent = item.category;
       meta.append(cat);
     }
-    if (item.date) {
+    if (dateLabel) {
       const date = document.createElement('span');
       date.className = 'article-list-date';
-      date.textContent = item.date;
+      date.textContent = dateLabel;
       meta.append(date);
     }
     body.append(meta);
@@ -101,14 +107,22 @@ function renderArticle(item) {
   titleEl.append(titleLink);
   body.append(titleEl);
 
-  if (item.description) {
-    const desc = document.createElement('p');
-    desc.textContent = item.description;
-    body.append(desc);
-  }
+  // Note: the source "Latest Articles" cards show only the category, date, and
+  // title — no description — so the description is intentionally omitted here.
 
   li.append(body);
   return li;
+}
+
+/**
+ * Parses a card date into a sortable timestamp. Supports the index's
+ * publication-date ("May 12" / "May 12, 2024") and ISO-ish values.
+ * @param {object} item an index row
+ */
+function dateValue(item) {
+  const raw = item.publicationdate || item.date || '';
+  const t = Date.parse(raw);
+  return Number.isNaN(t) ? 0 : t;
 }
 
 /**
@@ -135,6 +149,9 @@ export default async function decorate(block) {
   items = items.filter((item) => item.path
     && item.path !== here
     && (!prefix || item.path.startsWith(prefix)));
+
+  // newest first, so "Latest Articles" shows the most recent posts
+  if (items.some(dateValue)) items.sort((a, b) => dateValue(b) - dateValue(a));
 
   if (limit > 0) items = items.slice(0, limit);
 
