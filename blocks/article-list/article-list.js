@@ -13,10 +13,13 @@
  *    reads a query-index JSON feed instead:
  *      row 1: link to the index JSON (defaults to /query-index.json)
  *      row 2: path prefix filter, e.g. /blog/ (only list pages under it)
- *      row 3: max number of items to show (defaults to 4)
+ *      row 3: page size — how many to show at once (defaults to 4)
+ *      row 4: "Load more" button label — when present, the list paginates:
+ *             it shows one page, then reveals the next page-size batch on each
+ *             click until the whole feed is shown.
  *    Because it reads the published index at render time, publishing a new page
- *    makes it appear automatically — but category/date only show if the index
- *    is configured to surface them.
+ *    makes it appear automatically — no code change. Category/date show when
+ *    the index is configured to surface them.
  */
 
 import { createOptimizedPicture } from '../../scripts/aem.js';
@@ -32,7 +35,7 @@ const DEFAULT_LIMIT = 4;
 function readConfig(block) {
   const rows = [...block.querySelectorAll(':scope > div')];
   const link = block.querySelector('a');
-  const [, prefixRow, limitRow] = rows;
+  const [, prefixRow, limitRow, loadMoreRow] = rows;
 
   // Prefer the link text over its href: authoring/publishing can mangle a
   // path-like href (e.g. "/query-index.json" → "/query-index-json"), but the
@@ -47,12 +50,15 @@ function readConfig(block) {
   const prefix = prefixRow ? prefixRow.textContent.trim() : '';
   const limitText = limitRow ? limitRow.textContent.trim() : '';
   const parsedLimit = parseInt(limitText, 10);
+  // A "Load more" label in row 4 opts into pagination (limit = page size).
+  const loadMoreLabel = loadMoreRow ? loadMoreRow.textContent.trim() : '';
 
   return {
     indexPath,
     prefix,
     // default to a single four-up row unless the author overrides it
     limit: Number.isNaN(parsedLimit) ? DEFAULT_LIMIT : parsedLimit,
+    loadMoreLabel,
   };
 }
 
@@ -191,7 +197,9 @@ export default async function decorate(block) {
     return;
   }
 
-  const { indexPath, prefix, limit } = readConfig(block);
+  const {
+    indexPath, prefix, limit, loadMoreLabel,
+  } = readConfig(block);
 
   let items = [];
   try {
@@ -214,11 +222,36 @@ export default async function decorate(block) {
   // newest first, so "Latest Articles" shows the most recent posts
   if (items.some(dateValue)) items.sort((a, b) => dateValue(b) - dateValue(a));
 
-  if (limit > 0) items = items.slice(0, limit);
-
   const list = document.createElement('ul');
   list.className = 'article-list-items';
-  items.forEach((item) => list.append(renderArticle(item)));
 
+  // Pagination: when a "Load more" label is authored, the limit is the page
+  // size and a button reveals the next batch on each click. Otherwise the
+  // limit is a hard cap (or show all when 0).
+  const paginate = !!loadMoreLabel && limit > 0;
+  let shown = 0;
+
+  const renderNextPage = () => {
+    const next = paginate ? items.slice(shown, shown + limit)
+      : items.slice(0, limit > 0 ? limit : items.length);
+    next.forEach((item) => list.append(renderArticle(item)));
+    shown += next.length;
+  };
+
+  renderNextPage();
   block.replaceChildren(list);
+
+  if (paginate && shown < items.length) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'article-list-load-more';
+    button.textContent = loadMoreLabel;
+    button.addEventListener('click', () => {
+      renderNextPage();
+      // update the count and hide the button once everything is shown
+      button.setAttribute('aria-label', `${loadMoreLabel} (${items.length - shown} remaining)`);
+      if (shown >= items.length) button.remove();
+    });
+    block.append(button);
+  }
 }
