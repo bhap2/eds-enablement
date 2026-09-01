@@ -316,6 +316,17 @@ main .section.dark {
   padding: 64px 0;
 }
 
+/* centered section headers (WKND "Style in every snapshot" gallery +
+   "Latest articles"). The source centers the heading + subtitle above these
+   blocks; scope to the section's default-content header so the block content
+   (image grid, cards) keeps its own layout. A section may also opt in with a
+   `center` style via section metadata. */
+main .article-list-container .default-content-wrapper,
+main .columns-container:has(.columns-gallery) .default-content-wrapper,
+main .section.center .default-content-wrapper {
+  text-align: center;
+}
+
 /* light grey band */
 main .section.light {
   background-color: var(--light-color);
